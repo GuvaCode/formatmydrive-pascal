@@ -17,14 +17,26 @@
     along with FormatMyDrive.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*
+ * Este modulo esta originalmente escrito en C++ en mi otro proyecto,
+ * por lo tanto mantuve algunos nombres de var. con el prefijo 'm_'
+ * de modulo de clase.
+ * */
+
+
 #ifndef UDEV_CIN_H
 #define UDEV_CIN_H
 
-#include <stdio.h>
 #include <stdlib.h>
-
 #include <libudev.h>
 #include <assert.h>
+
+// Constantes para ReceiveEvents.
+#define RECEVENT_NONE 0     // ningun evento.
+#define RECEVENT_ADD  1     // nuevo dispositivo.
+#define RECEVENT_REMOVE 2   // dispositivo removido.
+
+
 typedef struct 
 {
     char node_path[41];
@@ -38,7 +50,7 @@ typedef struct
 typedef void (*ListDevicesCallback)(void);
 
 /* PRIVATE */
-
+// Las func. privadas con nombres tipo camelCase.
 int isDisk(struct udev_device* dev);
 struct udev_device* isDiskUSB(struct udev_device* dev );
 void makeDeviceProperty();
@@ -46,22 +58,18 @@ void makeDeviceProperty();
 static struct udev *m_udev;
 static struct udev_device *m_device;
 static struct udev_monitor *m_monitor;
-static const char* m_node_path;
-static DeviceProperty m_dev_prop;
+static const char* m_node_path;   // ej, /dev/sdc 
+static DeviceProperty m_dev_prop; // one shot.
 
 
 /* EXTERN */
-
+// Las func. externas con nombres al estilo pascal.
 extern void InitializeUdev();
 extern void UnitializeUdev();
-extern int GetMonitorEvent();
+extern int32_t GetMonitorEvent();
 extern const char* GetDeviceAttribute(const char* attr);
-extern const char* GetDeviceNodePath();
-extern int ReceiveEvents();
+extern int32_t ReceiveEvents();
 extern void ListDevices(ListDevicesCallback list_dev_cb);
-extern const DeviceProperty* GetDeviceProperty();
-
-
-
+extern const DeviceProperty* const GetDeviceProperty();
 
 #endif

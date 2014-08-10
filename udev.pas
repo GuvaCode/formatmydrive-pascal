@@ -55,14 +55,13 @@ type
   function ReceiveEvents : ctypes.cint32; cdecl;
   procedure ListDevices(cb : TListDevicesCallback); cdecl;
   function GetDeviceAttribute(attr : PChar) : PChar; cdecl;
-  function GetDeviceNodePath : PChar; cdecl;
   function GetDeviceProperty : PDeviceProperty; cdecl;
 
 implementation
 
-{$linklib c}
-{$linklib udev}
-{$link udev.o}
+{$linklib c}    { implica libc    }
+{$linklib udev} { implica libudev }
+{$link udev.o}  { linker only     }
 
 procedure InitializeUdev; cdecl; external;
 procedure UnitializeUdev; cdecl; external;
@@ -70,7 +69,6 @@ procedure ListDevices( cb : TListDevicesCallback); cdecl; external;
 function GetMonitorEvent : ctypes.cint32; cdecl; external;
 function ReceiveEvents : ctypes.cint32; cdecl; external;
 function GetDeviceAttribute(attr : PChar) : PChar; cdecl; external;
-function GetDeviceNodePath : PChar; cdecl; external;
 function GetDeviceProperty : PDeviceProperty; cdecl; external;
 end.
 

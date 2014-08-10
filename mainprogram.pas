@@ -80,7 +80,6 @@ var
   UdevEventEventHandler: PEventHandler;
   StrListDevices : TStringList;
   DeviceProperty : PDeviceProperty;
-  fListDeviceCallback : TListDevicesCallback;
 
 
 implementation
@@ -152,12 +151,12 @@ begin
 
   if (ret = 1) then { add }
      begin
-       Deviceproperty := GetDeviceProperty;
+       DeviceProperty := GetDeviceProperty;
        AddItemToDevicesList;
      end
   else if(ret = 2) then { remove }
      begin
-       Deviceproperty := GetDeviceProperty;
+       DeviceProperty := GetDeviceProperty;
        RemoveItemFromDevicesList;
      end
 end;
@@ -167,11 +166,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 begin
   StrListDevices := TStringList.Create;
   InitializeUdev;
-
-  fListDeviceCallback := @ListDevicesCallback;
-
-  ListDevices( fListDeviceCallback );
-
+  ListDevices( @ListDevicesCallback );
   UdevEventEventHandler := AddEventHandler( GetMonitorEvent, 3, @UdevEvent,0 );
 end;
 

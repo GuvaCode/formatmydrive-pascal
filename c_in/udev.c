@@ -20,14 +20,18 @@
 
 #include "udev.h"
 
-
+/*
+ * Private
+ * */
 int isDisk(struct udev_device* dev)
 {
     const char* stype = udev_device_get_devtype(dev);
     return  ( 0 == strcmp(stype, "disk") ) ? 1 : 0;
 }
 
-
+/*
+ * Private
+ * */
 struct udev_device* isDiskUSB(struct udev_device* dev )
 {
    return  udev_device_get_parent_with_subsystem_devtype(
@@ -36,11 +40,9 @@ struct udev_device* isDiskUSB(struct udev_device* dev )
            "usb_device");
 }
 
-
-
 /*
  * External
- * Enumera los disp. actualmente conectados
+ * Enumera los disp. actualmente conectados.
  */
 void ListDevices(ListDevicesCallback list_dev_cb)
 {
@@ -55,6 +57,7 @@ void ListDevices(ListDevicesCallback list_dev_cb)
 	udev_enumerate_scan_devices(enumerate);
 	devices = udev_enumerate_get_list_entry(enumerate);
 
+    //loop
 	udev_list_entry_foreach(dev_list_entry, devices) 
     {
 		const char* path = udev_list_entry_get_name(dev_list_entry);
@@ -70,69 +73,66 @@ void ListDevices(ListDevicesCallback list_dev_cb)
 
                 makeDeviceProperty();
                 
-                if ( list_dev_cb != NULL)
-                {
-                    (*list_dev_cb)();
-                }
-                else
-                {
-                    printf("\ncallback null\n");
-                }
+                assert(NULL != list_dev_cb );
+
+                // call pascal func.
+                (*list_dev_cb)();
             }
         }
         udev_device_unref(dev);
     }
-
 	udev_enumerate_unref(enumerate);
 }
 
-
-const DeviceProperty* GetDeviceProperty() 
+/*
+ * External
+ * */
+const DeviceProperty* const GetDeviceProperty() 
 { 
     return &m_dev_prop; 
 }
 
-
+/*
+ * External
+ * */
 const char* GetDeviceAttribute(const char* attr)
 {
     return  udev_device_get_sysattr_value(m_device, attr);
 }
 
-
-const char* GetDeviceNodePath() 
-{ 
-    return m_node_path; 
-}
-
-
+/*
+ * Private
+ * */
 void makeDeviceProperty()
 {
-    strcpy(m_dev_prop.node_path, m_node_path);
-    strcpy(m_dev_prop.id_vendor, udev_device_get_sysattr_value(m_device, "idVendor") );
-    strcpy(m_dev_prop.id_product, udev_device_get_sysattr_value(m_device, "idProduct") );
-    strcpy(m_dev_prop.product,  udev_device_get_sysattr_value(m_device, "product") );
-    strcpy(m_dev_prop.manufacturer, udev_device_get_sysattr_value(m_device, "manufacturer") );
-    strcpy(m_dev_prop.serial, udev_device_get_sysattr_value(m_device, "serial") );
+    strcpy(m_dev_prop.node_path,    m_node_path);
+    strcpy(m_dev_prop.id_vendor,    GetDeviceAttribute("idVendor") );
+    strcpy(m_dev_prop.id_product,   GetDeviceAttribute("idProduct") );
+    strcpy(m_dev_prop.product,      GetDeviceAttribute("product") );
+    strcpy(m_dev_prop.manufacturer, GetDeviceAttribute("manufacturer") );
+    strcpy(m_dev_prop.serial,       GetDeviceAttribute("serial") );
 }
 
 /* 
  * External
  * Función notificada.
- * Eventos: add = 1, remove = 2
- *
- */
-int ReceiveEvents()
+ * */
+int32_t ReceiveEvents()
 {
     assert(NULL != m_monitor);
 
+    int32_t ret = RECEVENT_NONE;
+
     struct udev_device* dev = udev_monitor_receive_device(m_monitor);
    
-    if ( 0 == isDisk(dev) ) { return; }
+    if ( 0 == isDisk(dev) ) 
+    { 
+        return ret; 
+    }
     
     m_node_path =  udev_device_get_devnode(dev);
-    const char * action = udev_device_get_action(dev);
 
-    int ret = 0; // por defecto, ninguno.
+    const char * action = udev_device_get_action(dev);
 
     if ( NULL != (dev = isDiskUSB(dev) ) )
     {
@@ -140,31 +140,26 @@ int ReceiveEvents()
 
         if ( !strcmp(action, "add") )
         {
-            ret = 1;
+            ret = RECEVENT_ADD;
             makeDeviceProperty();
         }
         else if ( !strcmp(action, "remove") )
         {
-            ret = 2;
+            ret = RECEVENT_REMOVE;
             makeDeviceProperty();
         }
-
-        /* Forzar vaciado.
-         * Para freepascal.
-         * */
-        fflush(stdout);
-
     }
    	udev_device_unref(dev);
 
     return ret;
 }
 
-
 /*
  * External
+ * Retorna un 'file descriptor' para utilizarlo
+ * como notificador.
  * */
-int GetMonitorEvent() 
+int32_t GetMonitorEvent() 
 {
     assert(NULL != m_udev);
 
@@ -174,13 +169,18 @@ int GetMonitorEvent()
 	return udev_monitor_get_fd(m_monitor);
 }
 
-
-
+/*
+ * External
+ * */
 void InitializeUdev() 
 {
     m_udev = udev_new();
+    assert(NULL != m_udev);
 }
 
+/*
+ * External
+ * */
 void UnitializeUdev()
 {
     udev_unref(m_udev);
