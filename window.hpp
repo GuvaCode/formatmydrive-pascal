@@ -18,6 +18,10 @@
 */
 
 
+#pragma once
+
+#include <fx.h>
+
 #include "program.hpp"
 
 class MainWindow : public FXMainWindow

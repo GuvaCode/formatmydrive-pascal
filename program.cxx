@@ -17,36 +17,9 @@
     along with FormatMyDrive.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 #include "program.hpp"
-#include "window.hpp"
 
-int main(int argc, char *argv[] )
-{
-    try  
-    {
-        program::udev.initUdev();
-    } 
-    catch(const std::runtime_error& err) 
-    {
-        std::cout << "Runtime error: " << err.what() <<  std::endl;
-        return EXIT_FAILURE;
-    }
+const char* program::VERSION = "0.1";
 
-    FXApp app("FormatMyDrive","fmtmydrv");
-   
-    app.init(argc, argv);
-   
-    MainWindow* mainWindow = new MainWindow(&app);
-
-    app.create();
-
-    app.addSignal(SIGINT, mainWindow, MainWindow::ID_QUIT);
-
-    const FX::FXInputHandle fd_event = program::udev.getMonitorEvent();
-
-    app.addInput(mainWindow, MainWindow::ID_UDEV_EVENT, fd_event, INPUT_READ, &program::udev);
-
-    return app.run();
-}
+Udev program::udev;
 

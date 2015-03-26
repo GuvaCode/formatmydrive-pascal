@@ -19,7 +19,6 @@
 
 #pragma once
 
-#include <fx.h>
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -30,8 +29,10 @@
 
 #include "udev.hpp"
 
-namespace Program  {
+namespace program  {
 
-    static Udev udev;
+	extern const char* VERSION;
+
+    extern Udev udev;
 }
 

@@ -17,9 +17,10 @@
     along with FormatMyDrive.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <unistd.h>
 
 #include "window.hpp"
-#include <unistd.h>
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 
 FXDEFMAP( MainWindow ) MainWindowMap[] = {
@@ -53,6 +54,10 @@ void MainWindow::create()
 {
     FXMainWindow::create();
     show(PLACEMENT_SCREEN);
+
+	FXString title;
+	title.format("FormatMyDrive v.%s", program::VERSION);
+	setTitle(title);
 }
 
 
