@@ -181,16 +181,21 @@ void Udev::receiveEvents()
         throw std::runtime_error(msg); 
     }
 
-    if (false == isDisk(dev)) { return; }
+    if (false == isDisk(dev)) 
+	{
+		udev_device_unref(dev);
+		return; 
+	}
     
     const std::string node_path =  udev_device_get_devnode(dev);
     const std::string action = udev_device_get_action(dev);
+	udev_device* dev_usb = nullptr;
 
-    if (nullptr != (dev = isDiskUSB(dev)))
+    if (nullptr != (dev_usb = isDiskUSB(dev)))
     {
         if ("add" == action)
         {
-            insertMapProperty( makeDeviceProperty(node_path, dev) );
+            insertMapProperty( makeDeviceProperty(node_path, dev_usb) );
 #ifdef DEBUG
             std::cout << "\nAction: " <<  action << std::endl;
             printInformation();
@@ -204,7 +209,6 @@ void Udev::receiveEvents()
             printInformation();
 #endif
         }
-
     }
    	udev_device_unref(dev);
 }

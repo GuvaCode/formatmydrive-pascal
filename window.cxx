@@ -52,12 +52,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::create()
 {
-    FXMainWindow::create();
-    show(PLACEMENT_SCREEN);
-
 	FXString title;
 	title.format("FormatMyDrive v.%s", program::VERSION);
+
+    FXMainWindow::create();
 	setTitle(title);
+    show(PLACEMENT_SCREEN);
 }
 
 
