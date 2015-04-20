@@ -30,12 +30,15 @@ void Udev::printInformation()
        const DeviceProperty* prop = pair.second; 
 
        std::cout << 
-       "\nDevice Node Path\t: " << prop->node_path
-       << "\nID_Vendor    \t: " << prop->id_vendor
-       << "\nID_Product   \t: " << prop->id_product
-       << "\nManufacturer \t: " << prop->manufacturer
-       << "\nProduct      \t: " << prop->product
-       << "\nSerial       \t: " << prop->serial  
+       "\nDevice path" << std::setw(4) << "\t: " << prop->node_path
+       << "\nID_Vendor" << std::setw(4) << "\t: " << prop->id_vendor
+       << "\nID_Product" << std::setw(4) << "\t: " << prop->id_product
+       << "\nManufacturer" << std::setw(4) << "\t: " << prop->manufacturer
+       << "\nProduct" << std::setw(4) << "\t: " << prop->product
+       << "\nSerial" << std::setw(4) << "\t\t: " << prop->serial  
+       << "\nVersion" << std::setw(4) << "\t: " << prop->version  
+       << "\nPower max." << std::setw(4) << "\t: " << prop->max_power  
+       << "\nBus" << std::setw(4) << "\t\t: " << prop->bus_num 
        << std::endl;
     }
 }
@@ -137,7 +140,10 @@ const DeviceProperty* Udev::makeDeviceProperty(const std::string& node_path, ude
                     .id_product		= udev_device_get_sysattr_value(dev, "idProduct"),
                     .manufacturer	= udev_device_get_sysattr_value(dev, "manufacturer"), 
                     .product		= udev_device_get_sysattr_value(dev, "product"),
-                    .serial			= "NN"
+                    .serial			= "NN",
+					.version		= udev_device_get_sysattr_value(dev, "version"),
+					.max_power		= udev_device_get_sysattr_value(dev, "bMaxPower"),
+					.bus_num		= udev_device_get_sysattr_value(dev, "busnum")
                 };
 
     const char *serial = udev_device_get_sysattr_value(dev, "serial");

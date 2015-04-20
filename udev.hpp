@@ -17,6 +17,9 @@
     along with FormatMyDrive.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* TODO:
+ * - Use FOX framework functions to replace STL.
+ **/
 
 #pragma once
 
@@ -24,6 +27,7 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <cassert>
 #include <stdexcept>
 
@@ -35,6 +39,9 @@ struct DeviceProperty
     std::string manufacturer;
     std::string product;
     std::string serial;
+	std::string version;
+	std::string max_power;
+	std::string bus_num;
 };
 
 
