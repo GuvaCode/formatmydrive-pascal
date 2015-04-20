@@ -92,3 +92,4 @@ long MainWindow::OnCmdUdevEvent(FXObject* obj, FXSelector sel, void* data)
     return 1;
 }
 
+/* vim: set ts=4 sw=4 tw=80 noet :*/

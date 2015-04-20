@@ -91,7 +91,7 @@ void Udev::listDevices()
 	udev_list_entry_foreach(dev_list_entry, devices) 
     {
 		const char* path = udev_list_entry_get_name(dev_list_entry);
-	    udev_device* dev = udev_device_new_from_syspath(m_udev, path);
+		udev_device* dev = udev_device_new_from_syspath(m_udev, path);
 
         if (true == isDisk(dev))
         {
@@ -216,7 +216,7 @@ void Udev::receiveEvents()
 #endif
         }
     }
-   	udev_device_unref(dev);
+	udev_device_unref(dev);
 }
 
 
@@ -258,3 +258,4 @@ Udev::~Udev()
     m_map_prop.clear();
 }
 
+/* vim: set ts=4 sw=4 tw=80 noet :*/

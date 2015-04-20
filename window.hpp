@@ -53,3 +53,4 @@ class MainWindow : public FXMainWindow
         virtual void create();
   };
 
+/* vim: set ts=4 sw=4 tw=80 noet :*/

@@ -74,8 +74,9 @@ class Udev
 
     private: // variables
 
-    	udev *m_udev;
+		udev *m_udev;
         udev_monitor *m_monitor;
         MapProp m_map_prop;
 };
 
+/* vim: set ts=4 sw=4 tw=80 noet :*/
