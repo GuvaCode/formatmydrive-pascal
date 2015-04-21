@@ -193,11 +193,11 @@ void Udev::receiveEvents()
 		return; 
 	}
     
-    const std::string node_path =  udev_device_get_devnode(dev);
+    const std::string node_path = udev_device_get_devnode(dev);
     const std::string action = udev_device_get_action(dev);
-	udev_device* dev_usb = nullptr;
+	udev_device* dev_usb = isDiskUSB(dev);
 
-    if (nullptr != (dev_usb = isDiskUSB(dev)))
+    if (nullptr != dev_usb)
     {
         if ("add" == action)
         {

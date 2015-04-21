@@ -43,8 +43,13 @@ int main(int argc, char *argv[] )
 
     app.addSignal(SIGINT, mainWindow, MainWindow::ID_QUIT);
 
+	// Rule #1 Set up monitoring
     const FX::FXInputHandle fd_event = program::udev.getMonitorEvent();
 
+	// Rule #2 Enumerate devices
+	program::udev.listDevices();
+
+	// Rule #3 Monitoring events
     app.addInput(mainWindow, MainWindow::ID_UDEV_EVENT, fd_event, INPUT_READ, &program::udev);
 
     return app.run();
