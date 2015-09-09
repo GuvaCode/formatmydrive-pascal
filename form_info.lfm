@@ -1,12 +1,11 @@
 object FormInfo: TFormInfo
-  Left = 164
+  Left = 451
   Height = 374
-  Top = 213
+  Top = 211
   Width = 333
   Caption = 'Information - fmtmydrv'
   ClientHeight = 374
   ClientWidth = 333
-  OnCreate = FormCreate
   LCLVersion = '1.2.6.0'
   object editPath: TEdit
     Left = 102
@@ -178,7 +177,12 @@ object FormInfo: TFormInfo
     Width = 75
     Caption = '&Close'
     ModalResult = 1
-    OnClick = buttonOkClick
     TabOrder = 10
+  end
+  object saveDlg: TSaveDialog
+    DefaultExt = '.txt'
+    FileName = 'fmtmydrv.txt'
+    left = 16
+    top = 8
   end
 end

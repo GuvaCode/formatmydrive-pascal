@@ -33,15 +33,15 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
-    procedure buttonOkClick(Sender: TObject);
+    saveDlg: TSaveDialog;
     procedure buttonSaveClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
 
 
   private
-    { private declarations }
+      device: PDeviceProperty;
+      procedure WriteFile (namefile: string);
   public
-        procedure FillInformation(dev : PDeviceProperty);
+      procedure FillInformation(dev : PDeviceProperty);
   end;
 
 var
@@ -54,31 +54,69 @@ implementation
 { TFormInfo }
 
 procedure TFormInfo.buttonSaveClick(Sender: TObject);
+const
+   MSG_FORMAT_TITLE = 'Confirmación';
+   MSG_FORMAT_BODY  = 'El archivo ya existe.' + #13#13 + '¿Decea sobrescribir el archivo?';
+var
+  msg : Integer;
 begin
-
+    if saveDlg.Execute then
+    begin
+      if FileExists (saveDlg.FileName) then
+        begin
+            msg := MessageDlg(MSG_FORMAT_TITLE, MSG_FORMAT_BODY, mtConfirmation, [mbYes, mbNo], 0);
+            if msg = mrNo then
+            begin
+                 exit;
+            end;
+        end;
+        WriteFile (saveDlg.FileName);
+    end;
 end;
 
-procedure TFormInfo.FormCreate(Sender: TObject);
-begin
 
+{sobreescribe el archivo}
+procedure TFormInfo.WriteFile (namefile: string);
+var
+  tfile : TextFile;
+
+begin
+    AssignFile (tfile, namefile);
+    rewrite(tfile);
+
+    with device^ do
+       begin
+          writeln (tfile, node_path);
+          writeln (tfile, id_vendor);
+          writeln (tfile, product);
+          writeln (tfile, id_product);
+          writeln (tfile, manufacturer);
+          writeln (tfile, serial);
+          writeln (tfile, version);
+          writeln (tfile, max_power);
+          writeln (tfile, bus);
+       end;
+    CloseFile (tfile);
 end;
 
-procedure TFormInfo.buttonOkClick(Sender: TObject);
-begin
 
-end;
 
 procedure TFormInfo.FillInformation(dev : PDeviceProperty);
 begin
-  editPath.Text := dev^.node_path;
-  editVendor.Text := dev^.id_vendor;
-  editProduct.Text := dev^.product;
-  editIdProduct.Text := dev^.id_product;
-  editManufacturer.Text := dev^.manufacturer;
-  editSerial.Text := dev^.serial;
-  editVersion.Text := dev^.version;
-  editPower.Text := dev^.max_power;
-  editBus.Text := dev^.bus;
+  with dev^ do
+     begin
+        editPath.Text := node_path;
+        editVendor.Text := id_vendor;
+        editProduct.Text := product;
+        editIdProduct.Text := id_product;
+        editManufacturer.Text := manufacturer;
+        editSerial.Text := serial;
+        editVersion.Text := version;
+        editPower.Text := max_power;
+        editBus.Text := bus;
+     end;
+
+  device := dev;
 end;
 
 

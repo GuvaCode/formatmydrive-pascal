@@ -109,19 +109,18 @@ procedure TMainForm.FreeAllHash(A : pointer; B : pointer);
 var
   dev : PDeviceProperty;
 begin
-     dev := A;
-     Freemem(dev);
-
+   dev := A;
+   Dispose (dev);
 end;
 
 procedure TMainForm.FillListDevices(A : pointer; B : pointer);
 var
-  attr : string;
-  dev : PDeviceProperty;
+   attr : string;
+   dev : PDeviceProperty;
 begin
-        dev := A;
-        attr := dev^.manufacturer + ' ' + dev^.product;
-        lstBoxDevices.Items.Add(attr );
+   dev := A;
+   attr := dev^.manufacturer + ' ' + dev^.product;
+   lstBoxDevices.Items.Add (attr);
 end;
 
 
@@ -138,35 +137,33 @@ end;
 
 procedure TMainForm.AddItemToDevicesList;
 var
-  attr : string;
-  dev_copy : PDeviceProperty;
+   attr : string;
+   dev_copy : PDeviceProperty;
 begin
-     attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
-     lstBoxDevices.Items.Add(attr );
+   attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
+   lstBoxDevices.Items.Add(attr );
 
-     New(dev_copy);
-     move(DeviceProperty^, dev_copy^, sizeof(TDeviceProperty));
+   New(dev_copy);
+   move(DeviceProperty^, dev_copy^, sizeof(TDeviceProperty));
 
-     HashListDevices.add (dev_copy^.node_path, dev_copy);
-     writeln ('List count:', HashListDevices.Count);
-
-
+   HashListDevices.add (dev_copy^.node_path, dev_copy);
+   writeln ('List count:', HashListDevices.Count);
 end;
 
 
 procedure TMainForm.RemoveItemFromDevicesList;
 var
-  dev  : PDeviceProperty;
+   dev : PDeviceProperty;
 begin
-     dev := HashListDevices.Find(DeviceProperty^.node_path);
-     if (dev <> nil) then
-     begin
-          HashListDevices.Delete  ( HashListDevices.IndexOf(dev));
-          Freemem (dev);
-     end;
+   dev := HashListDevices.Find(DeviceProperty^.node_path);
+   if (dev <> nil) then
+   begin
+       HashListDevices.Delete  ( HashListDevices.IndexOf(dev));
+       Dispose (dev);
+   end;
 
-     lstBoxDevices.Items.Clear;
-     HashListDevices.ForEachCall(@FillListDevices, nil);
+   lstBoxDevices.Items.Clear;
+   HashListDevices.ForEachCall(@FillListDevices, nil);
 end;
 
 
@@ -174,18 +171,23 @@ end;
  Event Handle Callback
 }
 procedure TMainForm.UdevEvent(AData: PtrInt; AFlags: dword);
+const
+   ADD = 1;      //ref. udev.c
+   REMOVE = 2;   //ref. udev.c
+
 var
-    ret : ctypes.cint32;
+   ret : ctypes.cint32;
+
 begin
 
   ret := ReceiveEvents;
 
-  if (ret = 1) then { add }
+  if (ret = ADD) then
      begin
        DeviceProperty := GetDeviceProperty;
        AddItemToDevicesList;
      end
-  else if(ret = 2) then { remove }
+  else if(ret = REMOVE) then
      begin
        DeviceProperty := GetDeviceProperty;
        RemoveItemFromDevicesList;
@@ -203,19 +205,19 @@ end;
 
 procedure TMainForm.lstBoxDevicesDblClick(Sender: TObject);
 var
-    dev : PDeviceProperty;
+   dev : PDeviceProperty;
 begin
-
-     dev := HashListDevices.Find (HashListDevices.NameOfIndex (lstBoxDevices.ItemIndex));
-     FormInfo.FillInformation(dev);
-     FormInfo.ShowModal;
+   { supone que el indice del hash coincide al mostrado en el editbox }
+   dev := HashListDevices.Find (HashListDevices.NameOfIndex (lstBoxDevices.ItemIndex));
+   FormInfo.FillInformation(dev);
+   FormInfo.ShowModal;
 end;
 
 
 procedure TMainForm.menuAboutClick(Sender: TObject);
 begin
   aboutForm.ShowModal;
-  end;
+end;
 
 
 procedure TMainForm.menuQuitClick(Sender: TObject);
