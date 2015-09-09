@@ -44,6 +44,9 @@ type
   product : array[0..40] of Char;
   manufacturer : array[0..40] of Char;
   serial : array[0..40] of Char;
+  version : array[0..40] of Char;
+  max_power : array[0..40] of Char;
+  bus : array[0..40] of Char;
   end;
   {$ENDIF}
 

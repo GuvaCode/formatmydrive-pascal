@@ -21,12 +21,14 @@ unit MainProgram;
 
 {$mode objfpc}{$H+}
 
+{$rangechecks on} {debug}
+
 interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
   StdCtrls, ComCtrls, Buttons, Menus, About, clocale, udev, LCLIntf,
-  InterfaceBase, LCLType, CTypes;
+  InterfaceBase, LCLType, CTypes, Contnrs, form_info;
 
   type
 
@@ -62,12 +64,15 @@ uses
     procedure btnCloseClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure lstBoxDevicesDblClick(Sender: TObject);
     procedure menuAboutClick(Sender: TObject);
     procedure menuQuitClick(Sender: TObject);
     procedure askFormatContinue();
     procedure UdevEvent(AData: PtrInt; AFlags: dword);
     procedure AddItemToDevicesList;
     procedure RemoveItemFromDevicesList;
+    procedure FreeAllHash(A : pointer; B : pointer);
+    procedure FillListDevices(A : pointer; B : pointer);
 
   private
     { private declarations }
@@ -78,8 +83,8 @@ uses
 var
   MainForm: TMainForm;
   UdevEventEventHandler: PEventHandler;
-  StrListDevices : TStringList;
   DeviceProperty : PDeviceProperty;
+  HashListDevices : TFPHashList;
 
 
 implementation
@@ -100,6 +105,25 @@ begin
   askFormatContinue;
 end;
 
+procedure TMainForm.FreeAllHash(A : pointer; B : pointer);
+var
+  dev : PDeviceProperty;
+begin
+     dev := A;
+     Freemem(dev);
+
+end;
+
+procedure TMainForm.FillListDevices(A : pointer; B : pointer);
+var
+  attr : string;
+  dev : PDeviceProperty;
+begin
+        dev := A;
+        attr := dev^.manufacturer + ' ' + dev^.product;
+        lstBoxDevices.Items.Add(attr );
+end;
+
 
 {
 Pointer function callback.
@@ -115,27 +139,34 @@ end;
 procedure TMainForm.AddItemToDevicesList;
 var
   attr : string;
+  dev_copy : PDeviceProperty;
 begin
      attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
-     StrListDevices.Add(attr);
-     lstBoxDevices.Items.Clear;
-     lstBoxDevices.Items.Assign( StrListDevices );
+     lstBoxDevices.Items.Add(attr );
+
+     New(dev_copy);
+     move(DeviceProperty^, dev_copy^, sizeof(TDeviceProperty));
+
+     HashListDevices.add (dev_copy^.node_path, dev_copy);
+     writeln ('List count:', HashListDevices.Count);
+
+
 end;
 
 
 procedure TMainForm.RemoveItemFromDevicesList;
 var
-  index_remove : Integer;
-  attr : string;
+  dev  : PDeviceProperty;
 begin
-     attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
-     index_remove := StrListDevices.IndexOf( attr );
-     if index_remove <> -1 then
+     dev := HashListDevices.Find(DeviceProperty^.node_path);
+     if (dev <> nil) then
      begin
-       StrListDevices.Delete(index_remove);
-       lstBoxDevices.Items.Clear;
-       lstBoxDevices.Items.Assign( StrListDevices);
+          HashListDevices.Delete  ( HashListDevices.IndexOf(dev));
+          Freemem (dev);
      end;
+
+     lstBoxDevices.Items.Clear;
+     HashListDevices.ForEachCall(@FillListDevices, nil);
 end;
 
 
@@ -164,10 +195,20 @@ end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  StrListDevices := TStringList.Create;
+  HashListDevices := TFPHashList.Create;
   InitializeUdev;
   ListDevices( @ListDevicesCallback );
   UdevEventEventHandler := AddEventHandler( GetMonitorEvent, 3, @UdevEvent,0 );
+end;
+
+procedure TMainForm.lstBoxDevicesDblClick(Sender: TObject);
+var
+    dev : PDeviceProperty;
+begin
+
+     dev := HashListDevices.Find (HashListDevices.NameOfIndex (lstBoxDevices.ItemIndex));
+     FormInfo.FillInformation(dev);
+     FormInfo.ShowModal;
 end;
 
 
@@ -180,7 +221,9 @@ begin
 procedure TMainForm.menuQuitClick(Sender: TObject);
 begin
   RemoveEventhandler(UdevEventEventHandler);
-  StrListDevices.Free;
+  UnitializeUdev;
+  HashListDevices.ForEachCall(@FreeAllHash, nil);
+  HashListDevices.Destroy;
   Close;
 end;
 

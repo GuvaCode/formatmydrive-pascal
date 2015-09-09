@@ -110,7 +110,27 @@ void makeDeviceProperty()
     strcpy(m_dev_prop.id_product,   GetDeviceAttribute("idProduct") );
     strcpy(m_dev_prop.product,      GetDeviceAttribute("product") );
     strcpy(m_dev_prop.manufacturer, GetDeviceAttribute("manufacturer") );
-    strcpy(m_dev_prop.serial,       GetDeviceAttribute("serial") );
+    strcpy(m_dev_prop.version,      GetDeviceAttribute("version") );
+    strcpy(m_dev_prop.max_power,    GetDeviceAttribute("bMaxPower") );
+    strcpy(m_dev_prop.bus,          GetDeviceAttribute("busnum") );
+
+    const char * serial = GetDeviceAttribute("serial");
+
+    if (serial != NULL)
+    {
+        // Validar el serial
+        for (const unsigned char *p = (unsigned char*)serial; *p != '\0'; p++)
+        {
+            if (*p < 0x20 || *p > 0x7f || *p == ',')
+            {
+                serial = "NN"; // serial no valido
+                break;
+            }
+        }
+        
+    }
+
+    strcpy(m_dev_prop.serial, serial);
 }
 
 /* 
@@ -127,6 +147,7 @@ int32_t ReceiveEvents()
    
     if ( 0 == isDisk(dev) ) 
     { 
+        udev_device_unref (dev);
         return ret; 
     }
     

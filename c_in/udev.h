@@ -27,8 +27,11 @@
 #ifndef UDEV_CIN_H
 #define UDEV_CIN_H
 
+#include <string.h>
 #include <stdlib.h>
+
 #include <libudev.h>
+
 #include <assert.h>
 
 // Constantes para ReceiveEvents.
@@ -45,6 +48,9 @@ typedef struct
     char product[41];
     char manufacturer[41];
     char serial[41];
+    char version[41];
+    char max_power[41];
+    char bus[41];
 }DeviceProperty;
 
 typedef void (*ListDevicesCallback)(void);

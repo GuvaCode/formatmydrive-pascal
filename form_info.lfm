@@ -1,0 +1,184 @@
+object FormInfo: TFormInfo
+  Left = 164
+  Height = 374
+  Top = 213
+  Width = 333
+  Caption = 'Information - fmtmydrv'
+  ClientHeight = 374
+  ClientWidth = 333
+  OnCreate = FormCreate
+  LCLVersion = '1.2.6.0'
+  object editPath: TEdit
+    Left = 102
+    Height = 23
+    Top = 24
+    Width = 206
+    ReadOnly = True
+    TabOrder = 0
+    Text = 'editPath'
+  end
+  object Label1: TLabel
+    Left = 72
+    Height = 13
+    Top = 32
+    Width = 28
+    Caption = 'Path :'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 56
+    Height = 13
+    Top = 64
+    Width = 41
+    Alignment = taRightJustify
+    Caption = 'Vendor :'
+    ParentColor = False
+  end
+  object editVendor: TEdit
+    Left = 102
+    Height = 23
+    Top = 56
+    Width = 206
+    ReadOnly = True
+    TabOrder = 1
+    Text = 'editVendor'
+  end
+  object Label3: TLabel
+    Left = 48
+    Height = 13
+    Top = 96
+    Width = 43
+    Caption = 'Product :'
+    ParentColor = False
+  end
+  object editProduct: TEdit
+    Left = 102
+    Height = 23
+    Top = 88
+    Width = 206
+    ReadOnly = True
+    TabOrder = 2
+    Text = 'editProduct'
+  end
+  object Label4: TLabel
+    Left = 40
+    Height = 13
+    Top = 128
+    Width = 57
+    Caption = 'ID Product :'
+    ParentColor = False
+  end
+  object editIdProduct: TEdit
+    Left = 102
+    Height = 23
+    Top = 120
+    Width = 206
+    ReadOnly = True
+    TabOrder = 3
+    Text = 'editIdProduct'
+  end
+  object Label5: TLabel
+    Left = 24
+    Height = 13
+    Top = 160
+    Width = 73
+    Caption = 'Manufacturer :'
+    ParentColor = False
+  end
+  object editManufacturer: TEdit
+    Left = 102
+    Height = 23
+    Top = 152
+    Width = 206
+    ReadOnly = True
+    TabOrder = 4
+    Text = 'editManufacturer'
+  end
+  object Label6: TLabel
+    Left = 64
+    Height = 13
+    Top = 194
+    Width = 32
+    Caption = 'Serial :'
+    ParentColor = False
+  end
+  object editSerial: TEdit
+    Left = 102
+    Height = 23
+    Top = 184
+    Width = 206
+    ReadOnly = True
+    TabOrder = 5
+    Text = 'editSerial'
+  end
+  object Label7: TLabel
+    Left = 56
+    Height = 13
+    Top = 224
+    Width = 42
+    Caption = 'Version :'
+    ParentColor = False
+  end
+  object editVersion: TEdit
+    Left = 104
+    Height = 23
+    Top = 216
+    Width = 206
+    ReadOnly = True
+    TabOrder = 6
+    Text = 'editVersion'
+  end
+  object Label8: TLabel
+    Left = 32
+    Height = 13
+    Top = 256
+    Width = 64
+    Caption = 'Power max. :'
+    ParentColor = False
+  end
+  object editPower: TEdit
+    Left = 102
+    Height = 23
+    Top = 248
+    Width = 206
+    ReadOnly = True
+    TabOrder = 7
+    Text = 'editPower'
+  end
+  object Label9: TLabel
+    Left = 72
+    Height = 13
+    Top = 288
+    Width = 24
+    Caption = 'Bus :'
+    ParentColor = False
+  end
+  object editBus: TEdit
+    Left = 102
+    Height = 23
+    Top = 280
+    Width = 206
+    ReadOnly = True
+    TabOrder = 8
+    Text = 'editBus'
+  end
+  object buttonSave: TButton
+    Left = 144
+    Height = 25
+    Top = 328
+    Width = 75
+    Caption = '&Save as...'
+    OnClick = buttonSaveClick
+    TabOrder = 9
+  end
+  object buttonOk: TButton
+    Left = 232
+    Height = 25
+    Top = 328
+    Width = 75
+    Caption = '&Close'
+    ModalResult = 1
+    OnClick = buttonOkClick
+    TabOrder = 10
+  end
+end

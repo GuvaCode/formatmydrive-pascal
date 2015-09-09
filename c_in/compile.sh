@@ -1,5 +1,5 @@
 #/bin/bash
-rm udev.o
-gcc -g -c udev.c 
-cp udev.o ..
+gcc -std=c99 -g -c udev.c 
+#gcc -g -c partition.c
+mv *.o ..
 
