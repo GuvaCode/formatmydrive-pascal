@@ -86,15 +86,15 @@ begin
 
     with device^ do
        begin
-          writeln (tfile, node_path);
-          writeln (tfile, id_vendor);
-          writeln (tfile, product);
-          writeln (tfile, id_product);
-          writeln (tfile, manufacturer);
-          writeln (tfile, serial);
-          writeln (tfile, version);
-          writeln (tfile, max_power);
-          writeln (tfile, bus);
+          writeln (tfile, 'Node       : ' + node_path);
+          writeln (tfile, 'Vendor     : ' + id_vendor);
+          writeln (tfile, 'Product    : ' + product);
+          writeln (tfile, 'ID Product : ' + id_product);
+          writeln (tfile, 'Manufacturer: ' + manufacturer);
+          writeln (tfile, 'Serial     : ' + serial);
+          writeln (tfile, 'Version    : ' + version);
+          writeln (tfile, 'Power max. : ' + max_power);
+          writeln (tfile, 'Bus        : ' + bus);
        end;
     CloseFile (tfile);
 end;
