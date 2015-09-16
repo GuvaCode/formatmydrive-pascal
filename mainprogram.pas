@@ -73,18 +73,20 @@ uses
     procedure RemoveItemFromDevicesList;
     procedure FreeAllHash(A : pointer; B : pointer);
     procedure FillListDevices(A : pointer; B : pointer);
+    procedure NewListItem ();
+
 
   private
     { private declarations }
+    DeviceProperty : PDeviceProperty;
+    HashListDevices : TFPHashList;
+    UdevEventEventHandler: PEventHandler;
   public
     { public declarations }
   end;
 
 var
   MainForm: TMainForm;
-  UdevEventEventHandler: PEventHandler;
-  DeviceProperty : PDeviceProperty;
-  HashListDevices : TFPHashList;
 
 
 implementation
@@ -106,21 +108,14 @@ begin
 end;
 
 procedure TMainForm.FreeAllHash(A : pointer; B : pointer);
-var
-  dev : PDeviceProperty;
 begin
-   dev := A;
-   Dispose (dev);
+   Dispose (PDeviceProperty(A));
 end;
 
 procedure TMainForm.FillListDevices(A : pointer; B : pointer);
-var
-   attr : string;
-   dev : PDeviceProperty;
 begin
-   dev := A;
-   attr := dev^.manufacturer + ' ' + dev^.product;
-   lstBoxDevices.Items.Add (attr);
+   DeviceProperty := PDeviceProperty(A);
+   NewListItem;
 end;
 
 
@@ -130,24 +125,29 @@ External Call.
 }
 procedure ListDevicesCallback(); cdecl;
 begin
-     DeviceProperty := GetDeviceProperty;
+     MainForm.DeviceProperty := GetDeviceProperty;
      MainForm.AddItemToDevicesList;
 end;
 
 
-procedure TMainForm.AddItemToDevicesList;
+procedure TMainForm.NewListItem;
 var
    attr : string;
+begin
+     attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
+     lstBoxDevices.Items.Add (attr);
+     lstBoxDevices.ItemIndex := lstBoxDevices.Count - 1;
+end;
+
+procedure TMainForm.AddItemToDevicesList;
+var
    dev_copy : PDeviceProperty;
 begin
-   attr := DeviceProperty^.manufacturer + ' ' + DeviceProperty^.product;
-   lstBoxDevices.Items.Add(attr );
-
-   New(dev_copy);
-   move(DeviceProperty^, dev_copy^, sizeof(TDeviceProperty));
-
+   NewListItem;
+   New (dev_copy);
+   move (DeviceProperty^, dev_copy^, sizeof(TDeviceProperty));
    HashListDevices.add (dev_copy^.node_path, dev_copy);
-   writeln ('List count:', HashListDevices.Count);
+   if FormInfo.IsVisible then FormInfo.FillInformation (@HashListDevices, @lstBoxDevices);
 end;
 
 
@@ -156,14 +156,15 @@ var
    dev : PDeviceProperty;
 begin
    dev := HashListDevices.Find(DeviceProperty^.node_path);
-   if (dev <> nil) then
+   if dev <> nil then
    begin
-       HashListDevices.Delete  ( HashListDevices.IndexOf(dev));
-       Dispose (dev);
+     HashListDevices.Delete  ( HashListDevices.IndexOf(dev));
+     Dispose (dev);
    end;
 
    lstBoxDevices.Items.Clear;
    HashListDevices.ForEachCall(@FillListDevices, nil);
+   if FormInfo.IsVisible then FormInfo.FillInformation(@HashListDevices, @lstBoxDevices);
 end;
 
 
@@ -179,38 +180,34 @@ var
    ret : ctypes.cint32;
 
 begin
-
   ret := ReceiveEvents;
 
-  if (ret = ADD) then
-     begin
-       DeviceProperty := GetDeviceProperty;
-       AddItemToDevicesList;
-     end
-  else if(ret = REMOVE) then
-     begin
-       DeviceProperty := GetDeviceProperty;
-       RemoveItemFromDevicesList;
-     end
+  if ret = ADD then
+  begin
+    DeviceProperty := GetDeviceProperty;
+    AddItemToDevicesList;
+  end
+  else if ret = REMOVE then
+  begin
+    DeviceProperty := GetDeviceProperty;
+    RemoveItemFromDevicesList;
+  end
 end;
 
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
+  FormInfo := TFormInfo.Create(Application);  // creado explícitamente.
   HashListDevices := TFPHashList.Create;
   InitializeUdev;
-  ListDevices( @ListDevicesCallback );
+  ListDevices ( @ListDevicesCallback );
   UdevEventEventHandler := AddEventHandler( GetMonitorEvent, 3, @UdevEvent,0 );
 end;
 
 procedure TMainForm.lstBoxDevicesDblClick(Sender: TObject);
-var
-   dev : PDeviceProperty;
 begin
-   { supone que el indice del hash coincide al mostrado en el editbox }
-   dev := HashListDevices.Find (HashListDevices.NameOfIndex (lstBoxDevices.ItemIndex));
-   FormInfo.FillInformation(dev);
-   FormInfo.ShowModal;
+  FormInfo.FillInformation(@HashListDevices, @lstBoxDevices);
+  FormInfo.ShowModal;
 end;
 
 

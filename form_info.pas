@@ -6,13 +6,18 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ExtCtrls,
-  StdCtrls, Udev;
+  StdCtrls, Udev,Contnrs;
 
 type
+
+  PHashListDevices = ^TFPHashList;
+  PListBox         = ^TListBox;
 
   { TFormInfo }
 
   TFormInfo = class(TForm)
+    btnPrev: TButton;
+    btnNext: TButton;
     buttonSave: TButton;
     buttonOk: TButton;
     editPath: TEdit;
@@ -34,15 +39,21 @@ type
     Label8: TLabel;
     Label9: TLabel;
     saveDlg: TSaveDialog;
+    procedure btnNavClick(Sender: TObject);
     procedure buttonSaveClick(Sender: TObject);
 
 
   private
-      device: PDeviceProperty;
+      m_device   : PDeviceProperty;
+      m_hashList : PHashListDevices;
+      m_listbox  : PListBox;
+
       procedure WriteFile (namefile: string);
+      procedure ValidateNavButtons ();
   public
-      procedure FillInformation(dev : PDeviceProperty);
+      procedure FillInformation(hashList : PHashListdevices; listBox : PListBox);
   end;
+
 
 var
   FormInfo: TFormInfo;
@@ -55,8 +66,8 @@ implementation
 
 procedure TFormInfo.buttonSaveClick(Sender: TObject);
 const
-   MSG_FORMAT_TITLE = 'Confirmación';
-   MSG_FORMAT_BODY  = 'El archivo ya existe.' + #13#13 + '¿Decea sobrescribir el archivo?';
+   MsgTitle = 'Confirmación';
+   MsgBody  = 'El archivo ya existe.' + #13#13 + '¿Desea sobrescribir el archivo?';
 var
   msg : Integer;
 begin
@@ -64,7 +75,7 @@ begin
     begin
       if FileExists (saveDlg.FileName) then
         begin
-            msg := MessageDlg(MSG_FORMAT_TITLE, MSG_FORMAT_BODY, mtConfirmation, [mbYes, mbNo], 0);
+            msg := MessageDlg(MsgTitle, MsgBody, mtConfirmation, [mbYes, mbNo], 0);
             if msg = mrNo then
             begin
                  exit;
@@ -72,6 +83,25 @@ begin
         end;
         WriteFile (saveDlg.FileName);
     end;
+end;
+
+
+procedure TFormInfo.btnNavClick(Sender: TObject);
+var
+  index : Word; //unsigned
+begin
+
+    index := m_listbox^.ItemIndex;
+
+    if Sender = btnPrev then
+        index := index - 1
+    else
+        index := index + 1;
+
+    m_listbox^.ItemIndex := index;
+
+    FillInformation (nil, nil);
+
 end;
 
 
@@ -84,7 +114,7 @@ begin
     AssignFile (tfile, namefile);
     rewrite(tfile);
 
-    with device^ do
+    with m_device^ do
        begin
           writeln (tfile, 'Node       : ' + node_path);
           writeln (tfile, 'Vendor     : ' + id_vendor);
@@ -100,9 +130,43 @@ begin
 end;
 
 
-
-procedure TFormInfo.FillInformation(dev : PDeviceProperty);
+procedure TFormINfo.ValidateNavButtons ();
 begin
+    if m_listbox^.Count = 1 then
+    begin
+       btnNext.Enabled := false;
+       btnPrev.Enabled := false;
+       exit;
+    end;
+
+     if m_listbox^.ItemIndex < m_listbox^.Count -1 then
+        btnNext.Enabled := true
+     else
+        btnNext.Enabled := false;
+
+     if (m_listbox^.ItemIndex > Int(0)) then
+        btnPrev.Enabled := true
+     else
+        btnPrev.Enabled := false;
+end;
+
+
+
+procedure TFormInfo.FillInformation(hashList : PHashListdevices; listBox : PListBox);
+var
+  dev : PDeviceProperty;
+begin
+      if m_listbox = nil then m_listbox := listBox;
+      if m_hashList = nil then m_hashList := hashList;
+
+      ValidateNavButtons ();
+
+  { supone que el indice del hash coincide al mostrado en el editbox }
+  dev := m_hashList^.Find (m_hashList^.NameOfIndex (m_listbox^.ItemIndex));
+
+  if dev = nil then exit;
+
+
   with dev^ do
      begin
         editPath.Text := node_path;
@@ -116,7 +180,7 @@ begin
         editBus.Text := bus;
      end;
 
-  device := dev;
+  m_device := dev;
 end;
 
 

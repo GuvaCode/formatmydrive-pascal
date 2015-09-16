@@ -34,10 +34,12 @@ int isDisk(struct udev_device* dev)
  * */
 struct udev_device* isDiskUSB(struct udev_device* dev )
 {
-   return  udev_device_get_parent_with_subsystem_devtype(
+   struct udev_device * parent;
+   parent = udev_device_get_parent_with_subsystem_devtype(
            dev,
            "usb",
            "usb_device");
+   return parent;
 }
 
 /*
@@ -51,6 +53,8 @@ void ListDevices(ListDevicesCallback list_dev_cb)
 
 	struct udev_enumerate* enumerate;
 	struct udev_list_entry* devices, *dev_list_entry;
+    struct udev_device * parent;
+
 
 	enumerate = udev_enumerate_new(m_udev);
 	udev_enumerate_add_match_subsystem(enumerate, "block");
@@ -67,9 +71,9 @@ void ListDevices(ListDevicesCallback list_dev_cb)
         {
             m_node_path =  udev_device_get_devnode(dev);
 
-            if ( NULL != (dev = isDiskUSB(dev) ) )
+            if ( NULL != (parent = isDiskUSB(dev) ) )
             {
-                m_device = dev;
+                m_device = parent;
 
                 makeDeviceProperty();
                 
@@ -151,13 +155,15 @@ int32_t ReceiveEvents()
         return ret; 
     }
     
+    struct udev_device * parent;
+
     m_node_path =  udev_device_get_devnode(dev);
 
     const char * action = udev_device_get_action(dev);
 
-    if ( NULL != (dev = isDiskUSB(dev) ) )
+    if ( NULL != (parent = isDiskUSB(dev) ) )
     {
-        m_device = dev;
+        m_device = parent;
 
         if ( !strcmp(action, "add") )
         {

@@ -1,12 +1,14 @@
 object FormInfo: TFormInfo
-  Left = 451
+  Left = 498
   Height = 374
-  Top = 211
+  Top = 122
   Width = 333
+  BorderIcons = []
+  BorderStyle = bsSingle
   Caption = 'Information - fmtmydrv'
   ClientHeight = 374
   ClientWidth = 333
-  LCLVersion = '1.2.6.0'
+  LCLVersion = '1.4.2.0'
   object editPath: TEdit
     Left = 102
     Height = 23
@@ -28,7 +30,7 @@ object FormInfo: TFormInfo
     Left = 56
     Height = 13
     Top = 64
-    Width = 41
+    Width = 40
     Alignment = taRightJustify
     Caption = 'Vendor :'
     ParentColor = False
@@ -63,7 +65,7 @@ object FormInfo: TFormInfo
     Left = 40
     Height = 13
     Top = 128
-    Width = 57
+    Width = 58
     Caption = 'ID Product :'
     ParentColor = False
   end
@@ -97,7 +99,7 @@ object FormInfo: TFormInfo
     Left = 64
     Height = 13
     Top = 194
-    Width = 32
+    Width = 34
     Caption = 'Serial :'
     ParentColor = False
   end
@@ -178,6 +180,24 @@ object FormInfo: TFormInfo
     Caption = '&Close'
     ModalResult = 1
     TabOrder = 10
+  end
+  object btnPrev: TButton
+    Left = 40
+    Height = 25
+    Top = 328
+    Width = 40
+    Caption = '<<'
+    OnClick = btnNavClick
+    TabOrder = 11
+  end
+  object btnNext: TButton
+    Left = 88
+    Height = 25
+    Top = 328
+    Width = 40
+    Caption = '>>'
+    OnClick = btnNavClick
+    TabOrder = 12
   end
   object saveDlg: TSaveDialog
     DefaultExt = '.txt'

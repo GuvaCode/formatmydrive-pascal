@@ -56,12 +56,6 @@
               </Win32>
             </Options>
           </Linking>
-          <Other>
-            <CompilerMessages>
-              <MsgFileName Value=""/>
-            </CompilerMessages>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
         </CompilerOptions>
       </Item2>
       <Item3 Name="Release">
@@ -93,12 +87,6 @@
               </Win32>
             </Options>
           </Linking>
-          <Other>
-            <CompilerMessages>
-              <MsgFileName Value=""/>
-            </CompilerMessages>
-            <CompilerPath Value="$(CompPath)"/>
-          </Other>
         </CompilerOptions>
       </Item3>
     </BuildModes>
@@ -119,7 +107,6 @@
       <Unit0>
         <Filename Value="FormatMyDrive.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="FormatMyDrive"/>
       </Unit0>
       <Unit1>
         <Filename Value="mainprogram.pas"/>
@@ -140,7 +127,6 @@
       <Unit3>
         <Filename Value="udev.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="udev"/>
       </Unit3>
       <Unit4>
         <Filename Value="form_info.pas"/>
@@ -148,7 +134,6 @@
         <ComponentName Value="FormInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="form_info"/>
       </Unit4>
     </Units>
   </ProjectOptions>
@@ -178,12 +163,6 @@
         </Win32>
       </Options>
     </Linking>
-    <Other>
-      <CompilerMessages>
-        <MsgFileName Value=""/>
-      </CompilerMessages>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">

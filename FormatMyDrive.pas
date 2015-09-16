@@ -17,8 +17,7 @@ begin
   RequireDerivedFormResource := True;
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TAboutForm, aboutForm);
-  Application.CreateForm(TFormInfo, FormInfo);
+  Application.CreateForm(TaboutForm, aboutForm);
   Application.Run;
 end.
 
