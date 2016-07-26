@@ -1,0 +1,1 @@
+<a href="http://es.zimagez.com/zimage/fmtmydrvalpha.php" target="_blank" title="Foto alojada por zimagez.com"><img src="http://es.zimagez.com/miniature/fmtmydrvalpha.jpg" alt="Foto alojada por zimagez.com" /></a>
