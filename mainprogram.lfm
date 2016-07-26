@@ -1,11 +1,11 @@
 object MainForm: TMainForm
-  Left = 569
+  Left = 967
   Height = 487
-  Top = 116
+  Top = 147
   Width = 387
   BorderStyle = bsSingle
   Caption = 'Format My Drive'
-  ClientHeight = 466
+  ClientHeight = 465
   ClientWidth = 387
   Icon.Data = {
     3E08010000000100010080800000010020002808010016000000280000008000
@@ -2126,7 +2126,7 @@ object MainForm: TMainForm
   }
   Menu = MainMenu
   OnCreate = FormCreate
-  LCLVersion = '1.4.2.0'
+  LCLVersion = '1.6.0.4'
   object StaticText1: TStaticText
     Left = 120
     Height = 17
@@ -2145,7 +2145,7 @@ object MainForm: TMainForm
   end
   object cboxFormat: TComboBox
     Left = 120
-    Height = 23
+    Height = 24
     Top = 184
     Width = 264
     ItemHeight = 0
@@ -2179,7 +2179,7 @@ object MainForm: TMainForm
   end
   object edtLabel: TEdit
     Left = 120
-    Height = 23
+    Height = 28
     Top = 240
     Width = 264
     TabOrder = 5
@@ -2194,7 +2194,7 @@ object MainForm: TMainForm
   end
   object cboxPartition: TComboBox
     Left = 120
-    Height = 23
+    Height = 24
     Top = 128
     Width = 264
     ItemHeight = 0
@@ -3272,22 +3272,22 @@ object MainForm: TMainForm
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 81
-    ClientWidth = 260
+    ClientHeight = 79
+    ClientWidth = 262
     TabOrder = 9
     object chkBoxBoot: TCheckBox
       Left = 6
-      Height = 35
+      Height = 34
       Top = 6
-      Width = 248
+      Width = 250
       Caption = '&Iniciable'
       TabOrder = 0
     end
     object chkBoxFastFormat: TCheckBox
       Left = 6
-      Height = 34
-      Top = 41
-      Width = 248
+      Height = 33
+      Top = 40
+      Width = 250
       Caption = '&Formato rápido'
       TabOrder = 1
     end
@@ -3296,7 +3296,7 @@ object MainForm: TMainForm
     AnchorSideLeft.Control = Owner
     Left = 0
     Height = 22
-    Top = 435
+    Top = 434
     Width = 106
     Alignment = taCenter
     Anchors = [akLeft]
@@ -3323,6 +3323,7 @@ object MainForm: TMainForm
     Caption = 'C&errar'
     Default = True
     OnClick = btnCloseClick
+    ParentShowHint = False
     TabOrder = 12
   end
   object lstBoxDevices: TListBox
@@ -3353,8 +3354,17 @@ object MainForm: TMainForm
     object MenuItem1: TMenuItem
       Caption = '&Archivo'
       object menuQuit: TMenuItem
-        Caption = '&Cerrar'
+        Caption = '&Salir'
         OnClick = menuQuitClick
+      end
+    end
+    object menuVer: TMenuItem
+      Caption = '&Ver'
+      OnClick = menuVerClick
+      object menuVerInfo: TMenuItem
+        Caption = 'Información...'
+        Enabled = False
+        OnClick = menuVerInfoClick
       end
     end
     object MenuItem3: TMenuItem

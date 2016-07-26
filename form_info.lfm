@@ -1,17 +1,17 @@
 object FormInfo: TFormInfo
-  Left = 498
+  Left = 794
   Height = 374
-  Top = 122
+  Top = 193
   Width = 333
   BorderIcons = []
   BorderStyle = bsSingle
   Caption = 'Information - fmtmydrv'
   ClientHeight = 374
   ClientWidth = 333
-  LCLVersion = '1.4.2.0'
+  LCLVersion = '1.6.0.4'
   object editPath: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 24
     Width = 206
     ReadOnly = True
@@ -19,25 +19,25 @@ object FormInfo: TFormInfo
     Text = 'editPath'
   end
   object Label1: TLabel
-    Left = 72
-    Height = 13
+    Left = 69
+    Height = 16
     Top = 32
-    Width = 28
+    Width = 30
     Caption = 'Path :'
     ParentColor = False
   end
   object Label2: TLabel
     Left = 56
-    Height = 13
+    Height = 16
     Top = 64
-    Width = 40
+    Width = 43
     Alignment = taRightJustify
     Caption = 'Vendor :'
     ParentColor = False
   end
   object editVendor: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 56
     Width = 206
     ReadOnly = True
@@ -45,16 +45,16 @@ object FormInfo: TFormInfo
     Text = 'editVendor'
   end
   object Label3: TLabel
-    Left = 48
-    Height = 13
+    Left = 52
+    Height = 16
     Top = 96
-    Width = 43
+    Width = 47
     Caption = 'Product :'
     ParentColor = False
   end
   object editProduct: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 88
     Width = 206
     ReadOnly = True
@@ -62,16 +62,16 @@ object FormInfo: TFormInfo
     Text = 'editProduct'
   end
   object Label4: TLabel
-    Left = 40
-    Height = 13
+    Left = 37
+    Height = 16
     Top = 128
-    Width = 58
+    Width = 62
     Caption = 'ID Product :'
     ParentColor = False
   end
   object editIdProduct: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 120
     Width = 206
     ReadOnly = True
@@ -80,15 +80,15 @@ object FormInfo: TFormInfo
   end
   object Label5: TLabel
     Left = 24
-    Height = 13
+    Height = 16
     Top = 160
-    Width = 73
+    Width = 75
     Caption = 'Manufacturer :'
     ParentColor = False
   end
   object editManufacturer: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 152
     Width = 206
     ReadOnly = True
@@ -97,15 +97,15 @@ object FormInfo: TFormInfo
   end
   object Label6: TLabel
     Left = 64
-    Height = 13
+    Height = 16
     Top = 194
-    Width = 34
+    Width = 35
     Caption = 'Serial :'
     ParentColor = False
   end
   object editSerial: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 184
     Width = 206
     ReadOnly = True
@@ -114,15 +114,15 @@ object FormInfo: TFormInfo
   end
   object Label7: TLabel
     Left = 56
-    Height = 13
+    Height = 16
     Top = 224
-    Width = 42
+    Width = 45
     Caption = 'Version :'
     ParentColor = False
   end
   object editVersion: TEdit
     Left = 104
-    Height = 23
+    Height = 26
     Top = 216
     Width = 206
     ReadOnly = True
@@ -131,15 +131,15 @@ object FormInfo: TFormInfo
   end
   object Label8: TLabel
     Left = 32
-    Height = 13
+    Height = 16
     Top = 256
-    Width = 64
+    Width = 68
     Caption = 'Power max. :'
     ParentColor = False
   end
   object editPower: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 248
     Width = 206
     ReadOnly = True
@@ -148,15 +148,15 @@ object FormInfo: TFormInfo
   end
   object Label9: TLabel
     Left = 72
-    Height = 13
+    Height = 16
     Top = 288
-    Width = 24
+    Width = 27
     Caption = 'Bus :'
     ParentColor = False
   end
   object editBus: TEdit
     Left = 102
-    Height = 23
+    Height = 26
     Top = 280
     Width = 206
     ReadOnly = True
