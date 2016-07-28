@@ -109,14 +109,14 @@ const char* GetDeviceAttribute(const char* attr)
  * */
 void makeDeviceProperty()
 {
-    strcpy(m_dev_prop.node_path,    m_node_path);
-    strcpy(m_dev_prop.id_vendor,    GetDeviceAttribute("idVendor") );
-    strcpy(m_dev_prop.id_product,   GetDeviceAttribute("idProduct") );
-    strcpy(m_dev_prop.product,      GetDeviceAttribute("product") );
-    strcpy(m_dev_prop.manufacturer, GetDeviceAttribute("manufacturer") );
-    strcpy(m_dev_prop.version,      GetDeviceAttribute("version") );
-    strcpy(m_dev_prop.max_power,    GetDeviceAttribute("bMaxPower") );
-    strcpy(m_dev_prop.bus,          GetDeviceAttribute("busnum") );
+    strncpy(m_dev_prop.node_path,    m_node_path, 40);
+    strncpy(m_dev_prop.id_vendor,    GetDeviceAttribute("idVendor"), 40);
+    strncpy(m_dev_prop.id_product,   GetDeviceAttribute("idProduct"), 40);
+    strncpy(m_dev_prop.product,      GetDeviceAttribute("product"), 40);
+    strncpy(m_dev_prop.manufacturer, GetDeviceAttribute("manufacturer"), 40);
+    strncpy(m_dev_prop.version,      GetDeviceAttribute("version"), 40);
+    strncpy(m_dev_prop.max_power,    GetDeviceAttribute("bMaxPower"), 40);
+    strncpy(m_dev_prop.bus,          GetDeviceAttribute("busnum"), 40);
 
     const char * serial = GetDeviceAttribute("serial");
 

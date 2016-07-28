@@ -18,8 +18,7 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainProgram"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="223"/>
+        <TopLine Value="35"/>
         <CursorPos X="34" Y="232"/>
         <UsageCount Value="79"/>
         <Loaded Value="True"/>
@@ -52,9 +51,10 @@
         <ComponentName Value="FormInfo"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="98"/>
-        <CursorPos X="49" Y="163"/>
+        <TopLine Value="20"/>
+        <CursorPos X="57" Y="172"/>
         <UsageCount Value="38"/>
         <Loaded Value="True"/>
       </Unit4>
@@ -135,7 +135,7 @@
       <Unit17>
         <Filename Value="c_in/udev.c"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="133"/>
+        <TopLine Value="104"/>
         <CursorPos Y="65"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
@@ -144,7 +144,7 @@
       <Unit18>
         <Filename Value="c_in/udev.h"/>
         <EditorIndex Value="4"/>
-        <TopLine Value="34"/>
+        <TopLine Value="42"/>
         <UsageCount Value="10"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="C++"/>
